@@ -155,7 +155,8 @@ export function AuthSheet() {
                 <div className="h-px flex-1 bg-border" />
               </div>
               
-              <a href="https://t.me"
+              <a 
+                href={`https://t.me/${process.env.VIT_MINIAPP_HANDLE}`}
                 target="_blank"
                 rel="noreferrer"
                 className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-border bg-surface text-sm font-medium hover:border-gold"
