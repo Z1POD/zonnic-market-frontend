@@ -1,6 +1,6 @@
 // src/lib/services/shipping.ts
 
-import { request, USE_MOCKS } from "@/lib/api-client";
+import { request } from "@/lib/api-client";
 import type { ShippingCity, ShippingOptionsResponse } from "@/types/api";
 
 const delay = <T,>(v: T, ms = 220) => new Promise<T>((r) => setTimeout(() => r(v), ms));
@@ -207,15 +207,10 @@ const MOCK_SHIPPING_OPTIONS: Record<string, ShippingOptionsResponse> = {
 
 export const shippingService = {
   async cities(): Promise<ShippingCity[]> {
-    if (USE_MOCKS) return delay(MOCK_CITIES);
     return request<ShippingCity[]>("/shipping/cities/");
   },
 
   async options(cityId: string, itemCount?: number, subtotal?: number): Promise<ShippingOptionsResponse> {
-    if (USE_MOCKS) {
-      const mock = MOCK_SHIPPING_OPTIONS[cityId];
-      return delay(mock ?? MOCK_SHIPPING_OPTIONS.city_addis);
-    }
     return request<ShippingOptionsResponse>("/shipping/options/", {
       query: {
         city_id: cityId,

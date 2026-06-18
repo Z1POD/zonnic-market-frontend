@@ -36,61 +36,27 @@ export interface ListProductsResponse {
 
 export const marketService = {
   async getHomepage(): Promise<HomepageData> {
-    if (USE_MOCKS) return delay(MOCK_HOMEPAGE);
     return request<HomepageData>("/market/");
   },
 
   async listProducts(params: ListProductsParams = {}): Promise<ListProductsResponse> {
-    if (USE_MOCKS) {
-      let products = MOCK_PRODUCT_LIST.slice();
-      if (params.store) products = products.filter((p) => p.store.slug === params.store);
-      if (params.q) {
-        const q = params.q.toLowerCase();
-        products = products.filter(
-          (p) => p.title.toLowerCase().includes(q) || p.store.name.toLowerCase().includes(q),
-        );
-      }
-      return delay({
-        products,
-        total_results: products.length,
-        page: 1,
-        total_pages: 1,
-        has_next: false,
-        has_previous: false,
-      });
-    }
+
     return request<ListProductsResponse>("/market/products/", {
       query: params as Record<string, string | number | boolean | undefined | null>,
     });
   },
 
   async getProduct(slug: string): Promise<ProductDetail> {
-    if (USE_MOCKS) {
-      const p = MOCK_PRODUCTS.find((x) => x.slug === slug);
-      if (!p) throw new Error("PRODUCT_NOT_FOUND");
-      return delay(p);
-    }
+   
     return request<ProductDetail>(`/market/products/${slug}/`);
   },
 
   async getStore(slug: string): Promise<StoreDetail> {
-    if (USE_MOCKS) {
-      const d = mockStoreDetail(slug);
-      if (!d) throw new Error("STORE_NOT_FOUND");
-      return delay(d);
-    }
     return request<StoreDetail>(`/market/stores/${slug}/`);
   },
 
   async searchSuggestions(q: string): Promise<string[]> {
-    if (USE_MOCKS) {
-      const ql = q.toLowerCase();
-      return delay(
-        MOCK_PRODUCT_LIST.filter((p) => p.title.toLowerCase().includes(ql))
-          .slice(0, 6)
-          .map((p) => p.title),
-      );
-    }
+
     return request<string[]>("/market/search/suggestions/", { query: { q } });
   },
 };

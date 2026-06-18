@@ -16,7 +16,6 @@ export const API_BASE_URL: string | undefined = RAW_BASE
   ? RAW_BASE.replace(/\/+$/, "")
   : undefined;
 
-export const USE_MOCKS = API_BASE_URL;
 
 const TOKEN_KEY = "ml-auth-token";
 

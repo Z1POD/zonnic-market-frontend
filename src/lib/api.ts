@@ -17,5 +17,5 @@ export const api = {
 };
 
 export type Api = typeof api;
-export { ApiError, API_BASE_URL, USE_MOCKS } from "@/lib/api-client";
+export { ApiError, API_BASE_URL} from "@/lib/api-client";
 
