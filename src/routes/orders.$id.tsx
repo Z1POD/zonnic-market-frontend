@@ -592,7 +592,7 @@ function PaymentVerificationInline({
           {(verifyState as any)?.is_terminal && !verifyState?.is_verified && (
             <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/5 p-4">
               <p className="text-sm text-destructive">
-                {verifyState.error_message ?? "Verification failed. Please try again."}
+                {verifyState?.error_message ?? "Verification failed. Please try again."}
               </p>
               <button
                 onClick={() => {

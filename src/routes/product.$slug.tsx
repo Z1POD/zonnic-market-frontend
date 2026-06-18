@@ -471,10 +471,6 @@ function RelatedProducts({ products }: { products: ProductListItem[] }) {
                 <p className="text-sm font-semibold tabular-nums">
                   {formatPrice(p.retail_price, p.currency)}
                 </p>
-                <div className="flex items-center gap-1 text-[11px] text-gold">
-                  <Star className="h-3 w-3 fill-current" />
-                  {p.rating.toFixed(1)}
-                </div>
               </div>
             </div>
           </Link>

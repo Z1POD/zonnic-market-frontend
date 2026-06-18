@@ -482,6 +482,8 @@ export interface CreateOrderInput {
   shipping_address?: ShippingAddressInput;
   shipping_address_id?: string;
   pickup_location?: string;
+  shipping_vendor?: string; 
+  shipping_service_level?: string;
   coupon_code?: string;
   customer_note?: string;
   currency?: string;
@@ -509,7 +511,7 @@ export interface SubmitReceiptInput {
 
 export interface SubmittedReceipt {
   transaction_id: string;
-  status: "submitted" | "verifying" | "verified" | "mismatch" | "failed";
+  status: "submitted" | "verifying" | "verified" | "mismatch" | "failed" | "timeout";
   status_display?: string;
   message?: string;
   amount: string;
@@ -520,7 +522,7 @@ export interface SubmittedReceipt {
 
 export interface VerifyResponse {
   transaction_id: string;
-  status: "submitted" | "verifying" | "verified" | "mismatch" | "failed";
+  status: "submitted" | "verifying" | "verified" | "mismatch" | "failed" | "timeout";
   status_display?: string;
   is_verified: boolean;
   is_terminal: boolean;
