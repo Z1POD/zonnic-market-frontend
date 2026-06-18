@@ -139,7 +139,7 @@ function OrderDetailPage() {
           {ORDER_STATUS_LABEL[order.status] ?? order.status}
         </span>
       </header>
-
+      
 
       {/* Tracking section - show if tracking available or order is shipped/delivered */}
       {(order.tracking_number || order.tracking_url || order.status === "shipped" || order.status === "delivered") && (
@@ -288,6 +288,11 @@ function OrderDetailPage() {
               <Row label="Total" value={formatPrice(order.pricing.total, order.pricing.currency)} bold />
             </dl>
           </div>
+          <div className="mt-4">
+            {needsPaymentVerification && order.invoice && (
+              <PaymentVerificationInline order={order} onVerified={() => refetch()} />
+            )}
+          </div>
         </section>
 
         <aside className="space-y-4">
@@ -376,7 +381,7 @@ function OrderDetailPage() {
                       "{order.shipping.pickup_location.instructions?.replace(/^['"]|['"]$/g, "")}"
                     </p>
                   )}
-                  {order.shipping.pickup_location.opening_hours && (
+                  {order.shipping.pickup_location?.opening_hours && (
                     <Accordion type="single" collapsible className="mt-4">
                       <AccordionItem value="hours" className="border-none">
                         <AccordionTrigger className="py-0 text-xs font-medium uppercase tracking-wide text-muted-foreground hover:no-underline">
@@ -385,21 +390,27 @@ function OrderDetailPage() {
 
                         <AccordionContent>
                           <div className="space-y-1 text-sm text-muted-foreground">
-                            {Object.entries(
-                              order.shipping.pickup_location.opening_hours
-                            ).map(([day, hours]) => (
-                              <div
-                                key={day}
-                                className="flex items-center justify-between"
-                              >
-                                <span className="capitalize">
-                                  {day.replace("-", " - ")}
-                                </span>
-                                <span>
-                                  {hours.open} – {hours.close}
-                                </span>
-                              </div>
-                            ))}
+                            {Object.entries(order.shipping.pickup_location.opening_hours).map(([day, hours]) => {
+                              // Cast hours to our explicit OpeningHourSlot type safely inline
+                              const slot = hours as { open: string; close: string } | null;
+                              
+                              // Skip rendering if this day is marked null/closed
+                              if (!slot) return null;
+
+                              return (
+                                <div
+                                  key={day}
+                                  className="flex items-center justify-between"
+                                >
+                                  <span className="capitalize">
+                                    {day.replace("-", " - ")}
+                                  </span>
+                                  <span>
+                                    {slot.open} – {slot.close}
+                                  </span>
+                                </div>
+                              );
+                            })}
                           </div>
                         </AccordionContent>
                       </AccordionItem>
@@ -419,9 +430,6 @@ function OrderDetailPage() {
 
           {/* Action buttons - only on detail page */}
           <div className="mt-4 flex flex-wrap gap-2">
-            {needsPaymentVerification && order.invoice && (
-              <PaymentVerificationInline order={order} onVerified={() => refetch()} />
-            )}
             {order.can_cancel && (
               <button
                 onClick={() => setShowCancelDialog(true)}

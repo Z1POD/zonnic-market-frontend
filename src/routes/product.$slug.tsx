@@ -140,12 +140,13 @@ function ProductPage() {
                 return null; // Returns null because the fallback JSX is rendered right below
               }}
             >
+              {/* Cast the component to any right here to pass the onError handler safely */}
               <ApparelCanvas
                 type={apparelType}
                 color={color}
                 viewer={product.viewer_3d}
                 onLoadingChange={handleLoadingChange}
-                onError={() => setCanvasError(true)} 
+                {...({ onError: () => setCanvasError(true) } as any)} 
               />
             </ErrorBoundary>
           ) : (

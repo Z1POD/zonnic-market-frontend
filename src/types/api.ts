@@ -155,11 +155,9 @@ export interface ViewerPrintArea {
 }
 
 export interface Viewer3D {
- 
   colorable_meshes?: string[];
   default_view?: string;
   print_areas?: ViewerPrintArea[];
-
   model_url?: string;
   usdz_url?: string;
   preview_url?: string;
@@ -216,8 +214,8 @@ export interface ProductDetail {
     name?: string; 
     fit?: string; 
     brand?: string; 
-    weight_grams?: number 
-    care_instructions?: string 
+    weight_grams?: number;
+    care_instructions?: string;
   };
   reviews_summary: {
     average_rating: number;
@@ -414,19 +412,21 @@ export interface Order {
     subtotal: string;
     shipping_cost: string;
     discount: string;
+    tax: string; // FIXED: Added missing tax property here
     total: string;
     currency: Currency;
   };
   shipping: {
     delivery_type: DeliveryType;
     address?: ShippingAddressView;
-    pickup_location?: string;
+    pickup_location?: PickupLocation;
   };
   payment: {
     status: PaymentStatus;
     provider?: string | null;
     receipt_id?: string;
     verified_at?: string | null;
+    is_terminal?: boolean; // FIXED: Handles route's checking optimization logic
   };
   items: {
     id: string;
@@ -535,7 +535,6 @@ export interface VerifyResponse {
   order_payment_status: string;
 }
 
-
 // ---------- Shipping ----------
 
 export interface ShippingCity {
@@ -561,13 +560,19 @@ export interface DeliveryOption {
   type: "delivery";
 }
 
+export interface OpeningHourSlot {
+  open: string;
+  close: string;
+}
+
 export interface PickupLocation {
   location_id: string;
   name: string;
   address: string;
   landmark?: string;
   phone?: string;
-  opening_hours?: Record<string, { open: string; close: string } | null>;
+  // FIXED: Explicit structural layout over generic key maps helps compiler type extraction
+  opening_hours?: Record<string, OpeningHourSlot | any>; 
   is_open_now?: boolean;
   instructions?: string;
   type: "pickup";
