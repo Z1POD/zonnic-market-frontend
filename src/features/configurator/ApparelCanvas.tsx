@@ -12,6 +12,7 @@ interface Props {
   accent?: string;
   viewer?: Viewer3D;
   onLoadingChange?: (loading: boolean, progress: number) => void;
+  onError?: () => void; // FIXED: Added the missing prop to the interface definition
 }
 
 function ProgressReporter({ onLoadingChange }: { onLoadingChange?: (loading: boolean, progress: number) => void }) {
@@ -20,7 +21,7 @@ function ProgressReporter({ onLoadingChange }: { onLoadingChange?: (loading: boo
   return null;
 }
 
-export function ApparelCanvas({ type, color, accent, viewer, onLoadingChange }: Props) {
+export function ApparelCanvas({ type, color, accent, viewer, onLoadingChange, onError }: Props) {
   const cam = viewer?.camera;
   const orbit = cam?.orbit;
   const hasContactShadows = viewer?.contact_shadows?.enabled ?? true;
@@ -30,6 +31,12 @@ export function ApparelCanvas({ type, color, accent, viewer, onLoadingChange }: 
       shadows
       dpr={[1, 2]}
       camera={{ position: cam?.position ?? [0, 0.2, 6], fov: cam?.fov ?? 35 }}
+      // FIXED: WebGL Context creation listener to trigger fallback immediately if the device engine crashes
+      onCreated={({ gl }) => {
+        gl.domElement.addEventListener("webglcontextlost", () => {
+          onError?.();
+        });
+      }}
       gl={{ antialias: true, alpha: true }}
       className="touch-none"
       style={viewer?.background ? { background: viewer.background } : undefined}

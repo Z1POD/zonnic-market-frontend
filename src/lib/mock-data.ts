@@ -386,7 +386,7 @@ export function mockCreateOrder(input: CreateOrderInput): Order {
         body: { order_id: id, provider: "cbe", receipt_identifier: "FT..." },
       },
     },
-    pricing: { subtotal: subtotal.toFixed(2), shipping_cost: "0.00", discount: "0.00", total: total.toFixed(2), currency },
+    pricing: { subtotal: subtotal.toFixed(2), shipping_cost: "0.00", discount: "0.00", "tax": "0.00", total: total.toFixed(2), currency },
     shipping: {
       delivery_type: input.delivery_type ?? "delivery",
       address: input.shipping_address
@@ -400,7 +400,7 @@ export function mockCreateOrder(input: CreateOrderInput): Order {
             postal_code: input.shipping_address.postal_code,
           }
         : undefined,
-      pickup_location: input.pickup_location,
+      pickup_location: { location_id: "1", name: "Warehouse", address: "123 Street", type: "pickup", cost: "0.00", is_free: true, estimated_days: "2" }
     },
     payment: { status: "pending", provider: null, receipt_id: "", verified_at: null },
     items,
@@ -548,6 +548,10 @@ export function mockVerify(tx_ref: string): VerifyResponse {
       receipt_identifier: t.receipt,
       submitted_at: t.submitted_at,
       verified_at: null,
+
+      is_terminal: true,
+      order_status: "processing",
+      order_payment_status: "paid"
     };
   }
   if (t.verdict === "mismatch") {
@@ -563,6 +567,10 @@ export function mockVerify(tx_ref: string): VerifyResponse {
       error_message: "Amount or recipient mismatch.",
       submitted_at: t.submitted_at,
       verified_at: null,
+
+      is_terminal: true,
+      order_status: "processing",
+      order_payment_status: "paid"
     };
   }
   // verified — flip the order to paid + confirmed
@@ -589,5 +597,10 @@ export function mockVerify(tx_ref: string): VerifyResponse {
     receipt_identifier: t.receipt,
     submitted_at: t.submitted_at,
     verified_at: new Date().toISOString(),
+
+    is_terminal: true,
+    order_status: "processing",
+    order_payment_status: "paid"
+
   };
 }

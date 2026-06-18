@@ -327,7 +327,6 @@ export function CheckoutDrawer() {
       "shipping_address.street": "street",
       "shipping_address.city_id": "city",
       "city_id": "city",
-      "shipping_vendor": "shipping_option",
       "pickup_location_id": "pickup_location_id",
       "items": "shipping_option",
       "delivery_type": "shipping_option",
@@ -366,7 +365,6 @@ export function CheckoutDrawer() {
         })),
         delivery_type: shippingType,
         shipping_address: isDelivery ? addr : undefined,
-        shipping_vendor: isDelivery ? selectedVendorCode : undefined,
         shipping_service_level: isDelivery
           ? shippingOptions?.delivery.find((d) => d.vendor_code === selectedVendorCode)?.service_name
               .toLowerCase()

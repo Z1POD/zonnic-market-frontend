@@ -249,6 +249,14 @@ function SavedDecalWithTexture({ printArea, meshNode }: { printArea: ViewerPrint
 
 // ---------- Procedural fallback (unchanged) ----------
 
+
+function matProps(material?: Viewer3D["material"]) {
+  return {
+    roughness: material?.roughness ?? 0.85,
+    metalness: material?.metalness ?? 0.05,
+  };
+}
+
 interface BodyProps {
   colorHex: string;
   accentHex: string;

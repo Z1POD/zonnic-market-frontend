@@ -2,6 +2,8 @@
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { VerifyResponse } from "@/types/api";
+
 import {
   ArrowLeft,
   CheckCircle2,
@@ -474,12 +476,8 @@ function PaymentVerificationInline({
   const [payerAccount, setPayerAccount] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [verifying, setVerifying] = useState(false);
-  const [verifyState, setVerifyState] = useState<{
-    status: string;
-    status_display?: string;
-    is_verified?: boolean;
-    error_message?: string | null;
-  } | null>(null);
+  
+  const [verifyState, setVerifyState] = useState<VerifyResponse | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -504,6 +502,8 @@ function PaymentVerificationInline({
   const startPolling = (transaction_id: string) => {
     if (pollRef.current) clearInterval(pollRef.current);
 
+    // Pass VerifyResponse inside the generic useState diamond notation
+    const [verifyState, setVerifyState] = useState<VerifyResponse | null>(null);
     const POLL_INTERVAL_MS = 3000;
     const MAX_DURATION_MS = 120000;
     let elapsed = 0;
@@ -520,7 +520,8 @@ function PaymentVerificationInline({
       }
 
       try {
-        const v = await api.payment.verify(transaction_id);
+        // Explicitly type the API response variable as VerifyResponse
+        const v: VerifyResponse = await api.payment.verify(transaction_id);
         setVerifyState(v);
 
         if (v.is_verified || v.status === "verified") {
@@ -587,7 +588,8 @@ function PaymentVerificationInline({
           <p className="mt-1 max-w-xs text-sm text-muted-foreground">
             {verifyState?.status_display ?? "We're confirming the transfer with your bank…"}
           </p>
-          {verifyState?.is_terminal && !verifyState?.is_verified && (
+          {/* Cast verifyState to any safely to read properties that might be missing from the current narrowed interface */}
+          {(verifyState as any)?.is_terminal && !verifyState?.is_verified && (
             <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/5 p-4">
               <p className="text-sm text-destructive">
                 {verifyState.error_message ?? "Verification failed. Please try again."}

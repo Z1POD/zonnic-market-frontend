@@ -1,6 +1,6 @@
 // src/lib/services/market.ts
 
-import { request, USE_MOCKS } from "@/lib/api-client";
+import { request } from "@/lib/api-client";
 import type {
   HomepageData,
   ProductDetail,
