@@ -531,9 +531,9 @@ export function mockVerify(tx_ref: string): VerifyResponse {
       submitted_at: new Date().toISOString(),
       verified_at: null,
 
-      is_terminal?: boolean;
-      order_status?: string;
-      order_payment_status?: string;
+      is_terminal: true, 
+      order_status: "failed",
+      order_payment_status: "unpaid"
     };
   }
   if (Date.now() < t.readyAt) {
