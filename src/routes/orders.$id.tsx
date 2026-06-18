@@ -512,10 +512,19 @@ function PaymentVerificationInline({
       if (elapsed >= MAX_DURATION_MS) {
         if (pollRef.current) clearInterval(pollRef.current);
         setVerifying(false);
-        setVerifyState({
-          status: "timeout",
-          status_display: "Verification timed out. Please check again later.",
-        });
+        setVerifyState({ 
+            status: "timeout", 
+            status_display: "Timed Out",
+            is_verified: false,
+            is_terminal: true,
+            transaction_id: "",
+            amount: "0.00",
+            currency: "",
+            provider: "",
+            submitted_at: new Date().toISOString(),
+            order_status: "pending",
+            order_payment_status: "pending"
+          });
         return;
       }
 

@@ -482,6 +482,7 @@ export interface CreateOrderInput {
   shipping_address?: ShippingAddressInput;
   shipping_address_id?: string;
   pickup_location?: string;
+  pickup_location_id?: string;
   shipping_vendor?: string; 
   shipping_service_level?: string;
   coupon_code?: string;
