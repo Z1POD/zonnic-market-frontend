@@ -239,3 +239,178 @@ function SavedDecalWithTexture({ printArea, meshNode }: { printArea: ViewerPrint
     </Decal>
   );
 }
+
+
+
+
+
+
+
+
+// ---------- Procedural fallback (unchanged) ----------
+
+interface BodyProps {
+  colorHex: string;
+  accentHex: string;
+  material?: Viewer3D["material"];
+}
+
+function useLerpColor(targetHex: string, refs: React.MutableRefObject<THREE.MeshStandardMaterial | null>[]) {
+  const target = useMemo(() => new THREE.Color(targetHex), [targetHex]);
+  useFrame((_, dt) => {
+    for (const r of refs) {
+      if (!r.current) continue;
+      r.current.color.lerp(target, Math.min(1, dt * 6));
+    }
+  });
+}
+
+function useGentleSpin(ref: React.RefObject<THREE.Group | null>) {
+  useFrame((_, dt) => {
+    if (ref.current) ref.current.rotation.y += dt * 0.15;
+  });
+}
+
+function Tee({ colorHex, accentHex, material, longSleeve = false }: BodyProps & { longSleeve?: boolean }) {
+  const group = useRef<THREE.Group>(null);
+  const body = useRef<THREE.MeshStandardMaterial>(null);
+  useLerpColor(colorHex, [body]);
+  useGentleSpin(group);
+  const mp = matProps(material);
+  const sleeveLen = longSleeve ? 1.5 : 0.7;
+  const sleeveX = 1.05 + sleeveLen / 2;
+  return (
+    <group ref={group} position={[0, -0.2, 0]}>
+      <mesh castShadow receiveShadow>
+        <boxGeometry args={[2.1, 2.6, 0.45]} />
+        <meshStandardMaterial ref={body} color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[0, 1.25, 0]} castShadow>
+        <cylinderGeometry args={[1.1, 1.05, 0.45, 32]} />
+        <meshStandardMaterial color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[sleeveX, 1.0, 0]} rotation={[0, 0, -Math.PI / 2.4]} castShadow>
+        <cylinderGeometry args={[0.42, 0.36, sleeveLen, 24]} />
+        <meshStandardMaterial color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[-sleeveX, 1.0, 0]} rotation={[0, 0, Math.PI / 2.4]} castShadow>
+        <cylinderGeometry args={[0.42, 0.36, sleeveLen, 24]} />
+        <meshStandardMaterial color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[0, 1.45, 0.18]}>
+        <torusGeometry args={[0.32, 0.06, 16, 32, Math.PI]} />
+        <meshStandardMaterial color={accentHex} roughness={0.7} />
+      </mesh>
+      <mesh position={[0, 0.1, 0.24]}>
+        <circleGeometry args={[0.35, 32]} />
+        <meshStandardMaterial color="#C5A059" roughness={0.4} metalness={0.6} />
+      </mesh>
+    </group>
+  );
+}
+
+function Hoodie({ colorHex, accentHex, material }: BodyProps) {
+  const group = useRef<THREE.Group>(null);
+  const body = useRef<THREE.MeshStandardMaterial>(null);
+  const accent = useRef<THREE.MeshStandardMaterial>(null);
+  useLerpColor(colorHex, [body]);
+  useLerpColor(accentHex, [accent]);
+  useGentleSpin(group);
+  const mp = matProps(material);
+  return (
+    <group ref={group} position={[0, -0.3, 0]}>
+      <mesh castShadow>
+        <boxGeometry args={[2.3, 2.8, 0.6]} />
+        <meshStandardMaterial ref={body} color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[0, 1.7, -0.1]} castShadow>
+        <sphereGeometry args={[0.85, 24, 24, 0, Math.PI * 2, 0, Math.PI / 1.8]} />
+        <meshStandardMaterial color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[1.55, 1.0, 0]} rotation={[0, 0, -Math.PI / 2.4]} castShadow>
+        <cylinderGeometry args={[0.45, 0.4, 1.6, 24]} />
+        <meshStandardMaterial color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[-1.55, 1.0, 0]} rotation={[0, 0, Math.PI / 2.4]} castShadow>
+        <cylinderGeometry args={[0.45, 0.4, 1.6, 24]} />
+        <meshStandardMaterial color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[0, -0.5, 0.32]}>
+        <boxGeometry args={[1.6, 0.7, 0.05]} />
+        <meshStandardMaterial ref={accent} color={accentHex} roughness={0.9} />
+      </mesh>
+      <mesh position={[-0.15, 1.1, 0.3]}>
+        <cylinderGeometry args={[0.02, 0.02, 0.45, 8]} />
+        <meshStandardMaterial color="#C5A059" metalness={0.5} roughness={0.4} />
+      </mesh>
+      <mesh position={[0.15, 1.1, 0.3]}>
+        <cylinderGeometry args={[0.02, 0.02, 0.45, 8]} />
+        <meshStandardMaterial color="#C5A059" metalness={0.5} roughness={0.4} />
+      </mesh>
+    </group>
+  );
+}
+
+function Cap({ colorHex, accentHex, material }: BodyProps) {
+  const group = useRef<THREE.Group>(null);
+  const crown = useRef<THREE.MeshStandardMaterial>(null);
+  const brim = useRef<THREE.MeshStandardMaterial>(null);
+  useLerpColor(colorHex, [crown]);
+  useLerpColor(accentHex, [brim]);
+  useGentleSpin(group);
+  const mp = matProps(material);
+  return (
+    <group ref={group} scale={1.4}>
+      <mesh castShadow>
+        <sphereGeometry args={[1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshStandardMaterial ref={crown} color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[0, -0.02, 0.6]} rotation={[Math.PI / 2.2, 0, 0]} castShadow>
+        <cylinderGeometry args={[0.95, 0.95, 0.08, 32, 1, false, -Math.PI / 2.5, Math.PI / 1.2]} />
+        <meshStandardMaterial ref={brim} color={accentHex} roughness={0.7} />
+      </mesh>
+      <mesh position={[0, 0.98, 0]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshStandardMaterial color="#C5A059" metalness={0.7} roughness={0.3} />
+      </mesh>
+      <mesh position={[0, 0.4, 0.95]}>
+        <circleGeometry args={[0.22, 32]} />
+        <meshStandardMaterial color="#C5A059" metalness={0.6} roughness={0.35} />
+      </mesh>
+    </group>
+  );
+}
+
+function Bag({ colorHex, accentHex, material }: BodyProps) {
+  const group = useRef<THREE.Group>(null);
+  const body = useRef<THREE.MeshStandardMaterial>(null);
+  const accent = useRef<THREE.MeshStandardMaterial>(null);
+  useLerpColor(colorHex, [body]);
+  useLerpColor(accentHex, [accent]);
+  useGentleSpin(group);
+  const mp = matProps(material);
+  return (
+    <group ref={group} position={[0, -0.2, 0]}>
+      <mesh castShadow>
+        <boxGeometry args={[2.0, 2.3, 0.7]} />
+        <meshStandardMaterial ref={body} color={colorHex} {...mp} />
+      </mesh>
+      <mesh position={[-0.55, 1.7, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.45, 0.05, 16, 32, Math.PI]} />
+        <meshStandardMaterial ref={accent} color={accentHex} roughness={0.5} />
+      </mesh>
+      <mesh position={[0.55, 1.7, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.45, 0.05, 16, 32, Math.PI]} />
+        <meshStandardMaterial color={accentHex} roughness={0.5} />
+      </mesh>
+      <mesh position={[0, 0.3, 0.36]}>
+        <planeGeometry args={[0.6, 0.4]} />
+        <meshStandardMaterial color={accentHex} roughness={0.6} />
+      </mesh>
+      <mesh position={[0, 0.3, 0.37]}>
+        <planeGeometry args={[0.4, 0.12]} />
+        <meshStandardMaterial color="#C5A059" metalness={0.6} roughness={0.35} />
+      </mesh>
+    </group>
+  );
+}

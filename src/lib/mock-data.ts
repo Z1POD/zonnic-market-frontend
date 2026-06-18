@@ -530,6 +530,10 @@ export function mockVerify(tx_ref: string): VerifyResponse {
       error_message: "Transaction not found.",
       submitted_at: new Date().toISOString(),
       verified_at: null,
+
+      is_terminal?: boolean;
+      order_status?: string;
+      order_payment_status?: string;
     };
   }
   if (Date.now() < t.readyAt) {
