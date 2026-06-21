@@ -11,7 +11,6 @@ import { api, ApiError } from "@/lib/api";
 import { ProductPageInner } from "./_product-shared";
 import type { ProductDetail } from "@/types/api";
 
-// ── Query ─────────────────────────────────────────────────────────────────────
 
 const previewQuery = (storeSlug: string, uuid: string) => ({
   queryKey: ["product-preview", storeSlug, uuid],
@@ -67,7 +66,6 @@ export const Route = createFileRoute("/$storeSlug/p/$uuid")({
   component: PreviewPage,
 });
 
-// ── Component ─────────────────────────────────────────────────────────────────
 
 function PreviewPage() {
   const { storeSlug, uuid } = Route.useParams();

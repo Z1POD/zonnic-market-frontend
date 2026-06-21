@@ -9,7 +9,7 @@
 import { Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Check, Loader2, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Check, Loader2, ShoppingBag, Eye, Star } from "lucide-react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { ErrorBoundary } from "@/components/ErrorPage";
 import { toast } from "sonner";
@@ -20,7 +20,6 @@ import { formatPrice } from "@/lib/format";
 import { inferApparelType } from "@/lib/apparel";
 import type { ProductDetail, ProductListItem } from "@/types/api";
 
-// ── Query factory ────────────────────────────────────────────────────────────
 
 export const productQuery = (slug: string) => ({
   queryKey: ["product", slug],
@@ -36,7 +35,6 @@ export const productQuery = (slug: string) => ({
   },
 });
 
-// ── <head> helper ────────────────────────────────────────────────────────────
 
 export function productHead(loaderData: ProductDetail | undefined) {
   const p = loaderData;
@@ -52,9 +50,6 @@ export function productHead(loaderData: ProductDetail | undefined) {
   };
 }
 
-// ── Page component ───────────────────────────────────────────────────────────
-// Accepts the slug via the `useParams` hook of whichever route renders it,
-// so callers pass it explicitly.
 
 interface ProductPageProps {
   slug: string;
@@ -202,19 +197,36 @@ export function ProductPageInner({ slug, backTo, queryOverride }: ProductPagePro
         </div>
 
         {/* ── Info Panel ───────────────────────────────────────────────── */}
-        <div className="flex flex-col gap-6 px-2 md:px-0 pb-28 md:pb-0">
-          {/* Title + creator */}
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{product.title}</h1>
-            {product.creator && (
-              <p className="mt-1 text-sm text-muted-foreground">by {product.creator.name}</p>
-            )}
-          </div>
-
-          {/* Description */}
-          {product.description && (
-            <p className="text-sm leading-relaxed text-muted-foreground">{product.description}</p>
-          )}
+        <div className="flex flex-col gap-6 px-2 md:px-0">
+          {/* Title + store */}
+            <div>
+                <Link
+                to="/store/$slug"
+                params={{ slug: product.store.slug }}
+                className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground hover:text-gold"
+                >
+                {product.store.name}
+                </Link>
+                <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{product.title}</h1>
+                <div className="mt-3 flex items-center gap-3 text-sm">
+                    <div className="flex items-center gap-1 text-gold">
+                        <Star className="h-3.5 w-3.5 fill-current" />
+                        <span className="font-medium">
+                        {product.reviews_summary.average_rating.toFixed(1)}
+                        </span>
+                    </div>
+                    <span className="text-muted-foreground">·</span>
+                    <span className="text-muted-foreground">
+                        {product.reviews_summary.total_reviews} reviews
+                    </span>
+                    <span className="text-muted-foreground">·</span>
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                        <Eye className="h-3.5 w-3.5"/>
+                        <span className="text-muted-foreground">{product.stats.view_count}</span>
+                    </div>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
+            </div>
 
           {/* Color swatches — desktop */}
           {product.variants.colors.length > 1 && (
@@ -322,7 +334,7 @@ export function ProductPageInner({ slug, backTo, queryOverride }: ProductPagePro
   );
 }
 
-// ── ProductPage wrapper (used by both /product/$slug and /p/$slug) ────────────
+// ProductPage wrapper (used by both /product/$slug and /p/$slug)
 // Each route passes its own slug from useParams; we accept it as a prop
 // so the shared component is decoupled from any specific route context.
 
@@ -330,7 +342,6 @@ export function ProductPage({ slug }: { slug: string }) {
   return <ProductPageInner slug={slug} />;
 }
 
-// ── Details section ──────────────────────────────────────────────────────────
 
 export function ProductDetailsSection({ product }: { product: ProductDetail }) {
   const info = product.apparel_info;
@@ -389,8 +400,6 @@ export function ProductDetailsSection({ product }: { product: ProductDetail }) {
     </section>
   );
 }
-
-// ── Related products ─────────────────────────────────────────────────────────
 
 export function RelatedProducts({ products }: { products: ProductListItem[] }) {
   return (
