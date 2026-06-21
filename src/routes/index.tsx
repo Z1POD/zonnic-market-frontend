@@ -86,15 +86,22 @@ function Index() {
                   {featured.title}
                 </div>
               )}
-              <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between rounded-2xl border border-border bg-background/70 px-4 py-3 backdrop-blur">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{featured.store.name}</p>
-                  <p className="text-sm font-semibold">{featured.title}</p>
-                </div>
-                <p className="text-sm font-semibold tabular-nums">
-                  {formatPrice(featured.retail_price, featured.currency)}
-                </p>
-              </div>
+              {featured && (
+                <Link
+                  to="/product/$slug"
+                  params={{ slug: featured.slug }}
+                  >
+                  <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between rounded-2xl border border-border bg-background/70 px-4 py-3 backdrop-blur">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{featured.store.name}</p>
+                      <p className="text-sm font-semibold">{featured.title}</p>
+                    </div>
+                    <p className="text-sm font-semibold tabular-nums">
+                      {formatPrice(featured.retail_price, featured.currency)}
+                    </p>
+                  </div>
+                </Link>
+              )}
             </div>
           )}
         </div>
