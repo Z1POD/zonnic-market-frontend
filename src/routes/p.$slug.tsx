@@ -1,19 +1,17 @@
-// src/routes/product.$slug.tsx
+// src/routes/p.$slug.tsx
 //
-// Canonical product detail page: /product/:slug
-// Rendering and data-fetching logic lives in _product-shared.tsx so it can
-// be reused by the /p/:slug alias and the private preview route without
-// duplicating code.
+// Short-URL alias: /p/:slug  →  same product detail page as /product/:slug
+// The route is a thin shell; all data-fetching and rendering live in
+// _product-shared.tsx so there is exactly one copy of that logic.
 
 import { createFileRoute } from "@tanstack/react-router";
 import { productQuery, productHead, ProductPageInner } from "./_product-shared";
-import type { ProductDetail } from "@/types/api";
 
-export const Route = createFileRoute("/product/$slug")({
+export const Route = createFileRoute("/p/$slug")({
   loader: ({ context, params }) =>
     context.queryClient.ensureQueryData(productQuery(params.slug)),
 
-  head: ({ loaderData }) => productHead(loaderData as ProductDetail | undefined),
+  head: ({ loaderData }) => productHead(loaderData as any),
 
   notFoundComponent: () => (
     <div className="grid min-h-[60vh] place-items-center px-6 text-center">
@@ -32,7 +30,7 @@ export const Route = createFileRoute("/product/$slug")({
     </div>
   ),
 
-  component: function ProductSlugPage() {
+  component: function PSlugPage() {
     const { slug } = Route.useParams();
     return <ProductPageInner slug={slug} />;
   },

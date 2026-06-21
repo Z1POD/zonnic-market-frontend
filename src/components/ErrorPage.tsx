@@ -88,7 +88,7 @@ function GridBackground() {
 function ErrorCode({ code }: { code: string }) {
   return (
     <div
-      className="select-none font-mono text-[clamp(4rem,15vw,7rem)] font-black leading-none tracking-tighter mt-2"
+      className="select-none font-mono text-[clamp(4rem,15vw,7rem)] font-black leading-none tracking-tighter mt-4"
       style={{
         background:
           "linear-gradient(135deg, hsl(var(--foreground) / 0.08) 0%, hsl(var(--foreground) / 0.18) 100%)",
@@ -103,67 +103,111 @@ function ErrorCode({ code }: { code: string }) {
   );
 }
 
-// ── Animated Vector Illustration ──────────────────────────────────────────
+// ── Animated Apparel Printing Vector Illustration ──────────────────────────
+
+
+// ── Animated Swapping Apparel Printing Vector Illustration ─────────────────
 
 function AnimatedErrorIllustration() {
   return (
-    <div className="relative flex items-center justify-center w-32 h-32 text-primary" aria-hidden>
-      <svg width="100%" height="100%" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div className="relative flex items-center justify-center w-56 h-56 text-primary" aria-hidden>
+      <svg width="100%" height="100%" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Background registration systems */}
         <circle 
           className="react-anim-pulse opacity-20" 
-          cx="60" 
-          cy="60" 
-          r="52" 
+          cx="100" 
+          cy="80" 
+          r="75" 
           stroke="currentColor" 
           strokeWidth="1" 
           fill="currentColor" 
-          fillOpacity="0.02"
+          fillOpacity="0.005"
         />
-
         <circle 
-          className="react-anim-dash opacity-40" 
-          cx="60" 
-          cy="60" 
-          r="42" 
+          className="react-anim-dash opacity-30" 
+          cx="100" 
+          cy="80" 
+          r="65" 
           stroke="currentColor" 
-          strokeWidth="1.5"
+          strokeWidth="1" 
+          strokeDasharray="4 4"
         />
-        
-        <g className="react-anim-tangle">
-          {/* Backing shield using CSS theme design system tokens */}
-          <path 
-            d="M 32,68 C 32,55 42,48 60,48 C 78,48 88,55 88,68 C 88,72 82,74 60,74 C 38,74 32,72 32,68 Z" 
-            fill="hsl(var(--background))" 
-            opacity="0.95" 
-          />
+
+        {/* Tilted Apparel Carousel Container */}
+        <g className="react-anim-apparel-tilt">
           
-          {/* Hanger hook mutated into an abstract questioning loop */}
-          <path 
-            d="M 60,48 C 60,38 72,36 68,26 C 64,16 52,18 52,26" 
-            stroke="currentColor" 
-            strokeWidth="2.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          />
-                
-          {/* Main hanger body frame structural paths */}
-          <path 
-            d="M 60,48 L 86,66 C 92,70 86,75 80,74 L 40,71 C 32,70 28,66 34,62 Z" 
-            stroke="currentColor" 
-            strokeWidth="2.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          />
+          {/* 1. THE CAP (Positioned at Center for Swapping) */}
+          <g className="react-swap-cap">
+            {/* Crown */}
+            <path d="M 78,73 C 78,54 118,54 122,73 Z" fill="hsl(var(--background))" stroke="currentColor" strokeWidth="2.5" />
+            {/* Visor/Brim */}
+            <path d="M 70,73 C 75,80 121,80 126,73 C 118,70 80,70 70,73 Z" fill="hsl(var(--background))" stroke="currentColor" strokeWidth="2.5" />
+            {/* Button */}
+            <circle cx="100" cy="55" r="2.5" fill="currentColor" />
+            
+            {/* Cap Ink Reveal Layer */}
+            <g clipPath="url(#apparel-print-window)">
+              <path d="M 100,63 L 100,68" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+            </g>
+          </g>
+
+          {/* 2. THE T-SHIRT */}
+          <g className="react-swap-shirt">
+            <path 
+              d="M 75,45 L 87,45 C 91,52 97,52 100,52 C 103,52 109,52 113,45 L 125,45 L 143,56 L 133,70 L 123,65 L 123,120 L 77,120 L 77,65 L 67,70 L 57,56 Z" 
+              fill="hsl(var(--background))" 
+              stroke="currentColor" 
+              strokeWidth="2.5" 
+              strokeLinejoin="round"
+            />
+            <path d="M 87,45 C 90,50 110,50 113,45" stroke="currentColor" strokeWidth="1.5" />
+            
+            {/* Shirt Ink Reveal Layer */}
+            <g clipPath="url(#apparel-print-window)">
+              <path d="M 100,65 L 100,85" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+              <circle cx="100" cy="95" r="2.5" fill="currentColor" />
+            </g>
+          </g>
+
+          {/* 3. THE TOTE BAG */}
+          <g className="react-swap-tote">
+            {/* Straps */}
+            <path d="M 90,65 C 90,40 110,40 110,65" stroke="currentColor" strokeWidth="2.5" fill="none" />
+            {/* Bag Body */}
+            <path d="M 78,65 L 122,65 L 118,120 L 82,120 Z" fill="hsl(var(--background))" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+            
+            {/* Tote Ink Reveal Layer */}
+            <g clipPath="url(#apparel-print-window)">
+              <path d="M 100,75 L 100,90" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+              <circle cx="100" cy="99" r="2" fill="currentColor" />
+            </g>
+          </g>
+          
         </g>
 
-        {/* Floating Playful Apparel Elements (Thread Loops / Seams) */}
-        <g className="react-anim-floating">
-          {/* Apparel themed Exclamation Point accent */}
-          <path d="M 60,56 L 60,63" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-          <circle cx="60" cy="68" r="2" fill="currentColor"/>
-          
-          
+        {/* Horizontal Printing Press Squeegee Assembly */}
+        <g className="react-anim-print-mechanics">
+          <g className="react-anim-squeegee">
+            {/* Mechanical Sled Handle */}
+            <path d="M 20,65 L 180,65 L 174,55 L 26,55 Z" fill="hsl(var(--muted))" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+            {/* Rubber Blade Edge */}
+            <path d="M 24,65 L 176,65 L 176,69 L 24,69 Z" fill="currentColor" />
+            {/* Liquid Ink Churn Crest */}
+            <path 
+              className="react-anim-ink-wave"
+              d="M 24,69 C 50,66 70,74 100,69 C 130,66 150,73 176,69 L 170,72 L 30,72 Z" 
+              fill="currentColor"
+              opacity="0.85"
+            />
+          </g>
         </g>
+        
+        {/* Print Windows Mask Bounds */}
+        <defs>
+          <clipPath id="apparel-print-window">
+            <rect className="react-anim-screen-mask" x="20" y="30" width="160" height="40" />
+          </clipPath>
+        </defs>
       </svg>
     </div>
   );
@@ -202,8 +246,9 @@ export function ErrorPage({ error, reset, kind: kindOverride, showBack = true }:
     <div className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-background px-5 py-20">
       <GridBackground />
 
-      {/* Playful Apparel SVG Animations injected globally */}
+      {/* Embedded Apparel Production Keyframe Engines */}
       <style>{`
+        /* Update the global <style> block inside your ErrorPage component to include these looping rules: */
         @keyframes err-slide-up {
           from { opacity: 0; transform: translateY(18px); }
           to   { opacity: 1; transform: translateY(0); }
@@ -212,25 +257,58 @@ export function ErrorPage({ error, reset, kind: kindOverride, showBack = true }:
 
         @keyframes react-svg-pulse {
           0%, 100% { transform: scale(1); opacity: 0.15; }
-          50% { transform: scale(1.04); opacity: 0.35; }
+          50% { transform: scale(1.02); opacity: 0.4; }
         }
         @keyframes react-svg-dash {
-          to { transform: rotate(360deg); }
+          to { transform: rotate(-360deg); }
         }
-        @keyframes react-svg-tangle {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          30% { transform: translateY(-3px) rotate(-4deg); }
-          70% { transform: translateY(2px) rotate(3deg); }
-        }
-        @keyframes react-svg-floating {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-5px) scale(1.05); }
+        @keyframes apparel-tilt-wobble {
+          0%, 100% { transform: rotate(-6deg) translateY(0px); }
+          50% { transform: rotate(-4deg) translateY(3px); }
         }
 
-        .react-anim-pulse { transform-origin: center; animation: react-svg-pulse 2.5s ease-in-out infinite; }
-        .react-anim-dash { transform-origin: center; stroke-dasharray: 6 4; animation: react-svg-dash 20s linear infinite; }
-        .react-anim-tangle { transform-origin: center; animation: react-svg-tangle 3s ease-in-out infinite; }
-        .react-anim-floating { transform-origin: center; animation: react-svg-floating 4s ease-in-out infinite; }
+        /* 12-Second Loop: Cycles through 3 items (4 seconds per item) */
+        @keyframes swap-item-1 {
+          0%, 33.33% { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+          33.34%, 100% { opacity: 0; transform: scale(0.9) translateY(5px); pointer-events: none; }
+        }
+        @keyframes swap-item-2 {
+          0%, 33.33% { opacity: 0; transform: scale(0.9) translateY(5px); pointer-events: none; }
+          33.34%, 66.66% { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+          66.67%, 100% { opacity: 0; transform: scale(0.9) translateY(5px); pointer-events: none; }
+        }
+        @keyframes swap-item-3 {
+          0%, 66.66% { opacity: 0; transform: scale(0.9) translateY(5px); pointer-events: none; }
+          66.67%, 100% { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+        }
+
+        /* Squeegee runs a double stroke loop every 4 seconds, synced to item swaps */
+        @keyframes printing-press-sweep {
+          0%, 100% { transform: translateY(-25px); }
+          45%, 55% { transform: translateY(48px); }
+        }
+        @keyframes mask-reveal-grow {
+          0%, 100% { height: 0px; }
+          45%, 55% { height: 80px; }
+        }
+        @keyframes ink-fluid-churn {
+          0%, 100% { d: path("M 24,69 C 50,66 70,74 100,69 C 130,66 150,73 176,69 L 170,72 L 30,72 Z"); }
+          50% { d: path("M 24,69 C 40,72 65,65 100,71 C 135,66 160,72 176,69 L 170,72 L 30,72 Z"); }
+        }
+
+        .react-anim-pulse { transform-origin: center; animation: react-svg-pulse 3s ease-in-out infinite; }
+        .react-anim-dash { transform-origin: center; animation: react-svg-dash 40s linear infinite; }
+        .react-anim-apparel-tilt { transform-origin: center; animation: apparel-tilt-wobble 4s ease-in-out infinite; }
+
+        /* Carousel Assignments */
+        .react-swap-cap { transform-origin: center; animation: swap-item-1 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        .react-swap-shirt { transform-origin: center; animation: swap-item-2 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        .react-swap-tote { transform-origin: center; animation: swap-item-3 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+
+        /* Mechanical Printing Actions */
+        .react-anim-squeegee { animation: printing-press-sweep 4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+        .react-anim-screen-mask { animation: mask-reveal-grow 4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+        .react-anim-ink-wave { animation: ink-fluid-churn 1.33s ease-in-out infinite; }
       `}</style>
 
       <div

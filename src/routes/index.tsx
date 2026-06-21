@@ -129,7 +129,7 @@ function Index() {
           <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{data.new_arrivals.title}</p>
           <h2 className="mt-1 text-3xl font-semibold tracking-tight md:text-4xl">Fresh from the studio</h2>
         </div>
-        <div className="grid auto-rows-[260px] grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+        <div className="grid auto-rows-[260px] grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
           {data.new_arrivals.products.slice(0, 6).map((p) => (
             <ProductCard key={p.id} product={p} page="landing" />
           ))}

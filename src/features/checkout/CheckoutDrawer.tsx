@@ -373,7 +373,7 @@ export function CheckoutDrawer() {
             : "standard"
           : undefined,
         pickup_location_id: !isDelivery ? selectedPickupId : undefined,
-        coupon_code: couponCode.trim() || undefined,
+        coupon_code: couponCode.trim(),
         customer_note: addr.delivery_instructions,
         currency: currency.code,
       });
@@ -901,7 +901,7 @@ export function CheckoutDrawer() {
               </div>
 
               {/* ── Coupon code (moved from shipping step) ── */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 rounded-2xl border border-ring bg-surface p-4">
                 <Label className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                   <span className="flex items-center gap-1.5">
                     <Tag className="h-3 w-3" />
@@ -909,7 +909,7 @@ export function CheckoutDrawer() {
                   </span>
                 </Label>
                 <div className="flex gap-2">
-                  <div className="relative flex-1">
+                  <div className="relative flex-1 pt-2">
                     <Input
                       ref={couponRef}
                       value={couponCode}
@@ -919,7 +919,7 @@ export function CheckoutDrawer() {
                       }}
                       placeholder="Enter coupon code"
                       disabled={!!fieldErrors.coupon_code}
-                      className={`h-11 rounded-xl border-border bg-surface pr-10 focus-visible:ring-gold ${
+                      className={`h-11 rounded-xl border-border bg-surface pr-10 focus-visible:ring-gold/30 ${
                         fieldErrors.coupon_code ? "border-destructive focus-visible:ring-destructive" : ""
                       }`}
                     />

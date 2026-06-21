@@ -7,7 +7,7 @@ import type {
   ProductListItem,
   StoreDetail,
 } from "@/types/api";
-import { MOCK_HOMEPAGE, MOCK_PRODUCTS, MOCK_PRODUCT_LIST, mockStoreDetail } from "@/lib/mock-data";
+
 
 const delay = <T,>(value: T, ms = 220) =>
   new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));
@@ -40,15 +40,19 @@ export const marketService = {
   },
 
   async listProducts(params: ListProductsParams = {}): Promise<ListProductsResponse> {
-
     return request<ListProductsResponse>("/market/products/", {
       query: params as Record<string, string | number | boolean | undefined | null>,
     });
   },
 
+  /** Public product detail — /market/p/:slug/ */
   async getProduct(slug: string): Promise<ProductDetail> {
-   
-    return request<ProductDetail>(`/market/products/${slug}/`);
+    return request<ProductDetail>(`/market/p/${slug}/`);
+  },
+
+  /** Private preview — /market/:storeSlug/p/:uuid/ (direct-link only, unlisted) */
+  async getProductPreview(storeSlug: string, uuid: string): Promise<ProductDetail> {
+    return request<ProductDetail>(`/market/${storeSlug}/p/${uuid}/`);
   },
 
   async getStore(slug: string): Promise<StoreDetail> {
@@ -56,7 +60,6 @@ export const marketService = {
   },
 
   async searchSuggestions(q: string): Promise<string[]> {
-
     return request<string[]>("/market/search/suggestions/", { query: { q } });
   },
 };

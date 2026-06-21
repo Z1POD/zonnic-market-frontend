@@ -14,7 +14,9 @@ import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StoreSlugRouteImport } from './routes/store.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as PSlugRouteImport } from './routes/p.$slug'
 import { Route as OrdersIdRouteImport } from './routes/orders.$id'
+import { Route as StoreSlugPUuidRouteImport } from './routes/$storeSlug.p.$uuid'
 
 const OrdersRoute = OrdersRouteImport.update({
   id: '/orders',
@@ -41,10 +43,20 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PSlugRoute = PSlugRouteImport.update({
+  id: '/p/$slug',
+  path: '/p/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrdersIdRoute = OrdersIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => OrdersRoute,
+} as any)
+const StoreSlugPUuidRoute = StoreSlugPUuidRouteImport.update({
+  id: '/$storeSlug/p/$uuid',
+  path: '/$storeSlug/p/$uuid',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -52,16 +64,20 @@ export interface FileRoutesByFullPath {
   '/catalog': typeof CatalogRoute
   '/orders': typeof OrdersRouteWithChildren
   '/orders/$id': typeof OrdersIdRoute
+  '/p/$slug': typeof PSlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/store/$slug': typeof StoreSlugRoute
+  '/$storeSlug/p/$uuid': typeof StoreSlugPUuidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/catalog': typeof CatalogRoute
   '/orders': typeof OrdersRouteWithChildren
   '/orders/$id': typeof OrdersIdRoute
+  '/p/$slug': typeof PSlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/store/$slug': typeof StoreSlugRoute
+  '/$storeSlug/p/$uuid': typeof StoreSlugPUuidRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,8 +85,10 @@ export interface FileRoutesById {
   '/catalog': typeof CatalogRoute
   '/orders': typeof OrdersRouteWithChildren
   '/orders/$id': typeof OrdersIdRoute
+  '/p/$slug': typeof PSlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/store/$slug': typeof StoreSlugRoute
+  '/$storeSlug/p/$uuid': typeof StoreSlugPUuidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -79,32 +97,40 @@ export interface FileRouteTypes {
     | '/catalog'
     | '/orders'
     | '/orders/$id'
+    | '/p/$slug'
     | '/product/$slug'
     | '/store/$slug'
+    | '/$storeSlug/p/$uuid'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/catalog'
     | '/orders'
     | '/orders/$id'
+    | '/p/$slug'
     | '/product/$slug'
     | '/store/$slug'
+    | '/$storeSlug/p/$uuid'
   id:
     | '__root__'
     | '/'
     | '/catalog'
     | '/orders'
     | '/orders/$id'
+    | '/p/$slug'
     | '/product/$slug'
     | '/store/$slug'
+    | '/$storeSlug/p/$uuid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CatalogRoute: typeof CatalogRoute
   OrdersRoute: typeof OrdersRouteWithChildren
+  PSlugRoute: typeof PSlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
   StoreSlugRoute: typeof StoreSlugRoute
+  StoreSlugPUuidRoute: typeof StoreSlugPUuidRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -144,12 +170,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/p/$slug': {
+      id: '/p/$slug'
+      path: '/p/$slug'
+      fullPath: '/p/$slug'
+      preLoaderRoute: typeof PSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/orders/$id': {
       id: '/orders/$id'
       path: '/$id'
       fullPath: '/orders/$id'
       preLoaderRoute: typeof OrdersIdRouteImport
       parentRoute: typeof OrdersRoute
+    }
+    '/$storeSlug/p/$uuid': {
+      id: '/$storeSlug/p/$uuid'
+      path: '/$storeSlug/p/$uuid'
+      fullPath: '/$storeSlug/p/$uuid'
+      preLoaderRoute: typeof StoreSlugPUuidRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -169,8 +209,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CatalogRoute: CatalogRoute,
   OrdersRoute: OrdersRouteWithChildren,
+  PSlugRoute: PSlugRoute,
   ProductSlugRoute: ProductSlugRoute,
   StoreSlugRoute: StoreSlugRoute,
+  StoreSlugPUuidRoute: StoreSlugPUuidRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
